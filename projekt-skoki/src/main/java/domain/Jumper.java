@@ -1,6 +1,7 @@
 package domain;
 
 import java.sql.Date;
+import java.util.Objects;
 
 public class Jumper {
 
@@ -8,13 +9,14 @@ public class Jumper {
     private String name;
     private String surname;
     private Date date_of_birth;
-    private float personal_best;
+    private Double personal_best;
     private int carrer_wins;
-    private Team team;
+    private int team;
 
     public Jumper(){};
 
-    public Jumper(String name, String surname, Date date_of_birth, float personal_best, int carrer_wins, Team team) {
+    public Jumper(int id, String name, String surname, Date date_of_birth, double personal_best, int carrer_wins, int team) {
+        this.id = id;
         this.name = name;
         this.surname = surname;
         this.date_of_birth = date_of_birth;
@@ -55,11 +57,11 @@ public class Jumper {
         this.date_of_birth = date_of_birth;
     }
 
-    public float getPersonal_best() {
+    public Double getPersonal_best() {
         return personal_best;
     }
 
-    public void setPersonal_best(float personal_best) {
+    public void setPersonal_best(double personal_best) {
         this.personal_best = personal_best;
     }
 
@@ -71,11 +73,43 @@ public class Jumper {
         this.carrer_wins = carrer_wins;
     }
 
-    public Team getTeam() {
+    public int getTeam() {
         return team;
     }
 
-    public void setTeam(Team team) {
+    public void setTeam(int team) {
         this.team = team;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Jumper jumper = (Jumper) o;
+        return id == jumper.id &&
+                carrer_wins == jumper.carrer_wins &&
+                team == jumper.team &&
+                Objects.equals(name, jumper.name) &&
+                Objects.equals(surname, jumper.surname) &&
+                Objects.equals(date_of_birth, jumper.date_of_birth) &&
+                Objects.equals(personal_best, jumper.personal_best);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, surname, date_of_birth, personal_best, carrer_wins, team);
+    }
+
+    @Override
+    public String toString() {
+        return "Jumper{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", date_of_birth=" + date_of_birth +
+                ", personal_best=" + personal_best +
+                ", carrer_wins=" + carrer_wins +
+                ", team=" + team +
+                '}';
     }
 }

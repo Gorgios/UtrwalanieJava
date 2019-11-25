@@ -1,22 +1,23 @@
 package domain;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Team {
     private int id;
     private String name;
     private String sponsor;
-    private float budget;
-    private List<Jumper> jumpers;
+    private Double budget;
 
     public Team(){};
 
-    public Team(String name, String sponsor, float budget, List<Jumper> jumpers) {
+    public Team(int id, String name, String sponsor, Double budget) {
+        this.id = id;
         this.name = name;
         this.sponsor = sponsor;
         this.budget = budget;
-        this.jumpers = jumpers;
     }
+
 
     public int getId() {
         return id;
@@ -42,19 +43,37 @@ public class Team {
         this.sponsor = sponsor;
     }
 
-    public float getBudget() {
+    public Double getBudget() {
         return budget;
     }
 
-    public void setBudget(float budget) {
+    public void setBudget(Double budget) {
         this.budget = budget;
     }
 
-    public List<Jumper> getJumpers() {
-        return jumpers;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Team team = (Team) o;
+        return id == team.id &&
+                Double.compare(team.budget, budget) == 0 &&
+                name.equals(team.name) &&
+                sponsor.equals(team.sponsor);
     }
 
-    public void setJumpers(List<Jumper> jumpers) {
-        this.jumpers = jumpers;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, sponsor, budget);
+    }
+
+    @Override
+    public String toString() {
+        return "Team{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", sponsor='" + sponsor + '\'' +
+                ", budget=" + budget +
+                '}';
     }
 }
