@@ -23,7 +23,7 @@ public class DatabaseOperations {
         return preparedStatement;
     }
 
-    public static ResultSet executeQuery(String query) throws SQLException{
+    public static ResultSet executeQuery(String query) throws SQLException {
 
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         ResultSet rs = preparedStatement.executeQuery();
@@ -31,7 +31,7 @@ public class DatabaseOperations {
         return rs;
     }
 
-    public static int executeUpdate(PreparedStatement preparedStatement) throws SQLException{
+    public static int executeUpdate(PreparedStatement preparedStatement) throws SQLException {
 
         int result = preparedStatement.executeUpdate();
         return result;

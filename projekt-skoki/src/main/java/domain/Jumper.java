@@ -13,7 +13,10 @@ public class Jumper {
     private int carrer_wins;
     private int team;
 
-    public Jumper(){};
+    public Jumper() {
+    }
+
+    ;
 
     public Jumper(int id, String name, String surname, Date date_of_birth, double personal_best, int carrer_wins, int team) {
         this.id = id;

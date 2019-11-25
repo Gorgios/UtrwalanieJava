@@ -49,13 +49,12 @@ public class JumperService {
     PreparedStatement preparedStatement = null;
 
     public JumperService() throws SQLException {
-        try{
+        try {
             DatabaseOperations.connection.setAutoCommit(false);
             preparedStatement = DatabaseOperations.getPrepraredStatement(CREATE_JUMPER_TABLE);
             DatabaseOperations.executeUpdate(preparedStatement);
             DatabaseOperations.connection.commit();
-            }
-        catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("DB problem");
             DatabaseOperations.connection.rollback();
@@ -63,8 +62,8 @@ public class JumperService {
 
     }
 
-    public int create(Jumper jumper) throws SQLException{
-        int r=0;
+    public int create(Jumper jumper) throws SQLException {
+        int r = 0;
         try {
             preparedStatement = DatabaseOperations.getPrepraredStatement(CREATE_JUMPER);
             preparedStatement.setInt(1, jumper.getId());
@@ -76,8 +75,7 @@ public class JumperService {
             preparedStatement.setInt(7, jumper.getTeam());
             r = DatabaseOperations.executeUpdate(preparedStatement);
             DatabaseOperations.connection.commit();
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("DB problem");
             DatabaseOperations.connection.rollback();
@@ -85,15 +83,14 @@ public class JumperService {
         return r;
     }
 
-    public int delete(int id) throws SQLException{
-        int r=0;
-        try{
+    public int delete(int id) throws SQLException {
+        int r = 0;
+        try {
             preparedStatement = DatabaseOperations.getPrepraredStatement(DELETE_JUMPER);
-            preparedStatement.setInt(1,id);
+            preparedStatement.setInt(1, id);
             r = DatabaseOperations.executeUpdate(preparedStatement);
             DatabaseOperations.connection.commit();
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("DB problem");
             DatabaseOperations.connection.rollback();
@@ -101,8 +98,8 @@ public class JumperService {
         return r;
     }
 
-    public int update(Jumper jumper) throws SQLException{
-        int r=0;
+    public int update(Jumper jumper) throws SQLException {
+        int r = 0;
         try {
             preparedStatement = DatabaseOperations.getPrepraredStatement(UPDATE_JUMPER);
             preparedStatement.setString(1, jumper.getName());
@@ -114,28 +111,29 @@ public class JumperService {
             preparedStatement.setInt(7, jumper.getId());
             r = DatabaseOperations.executeUpdate(preparedStatement);
             DatabaseOperations.connection.commit();
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("DB problem");
             DatabaseOperations.connection.rollback();
         }
         return r;
     }
-    public Jumper read_jumper(int id) throws SQLException{
-        Jumper jumper = new Jumper();;
-        try{
+
+    public Jumper read_jumper(int id) throws SQLException {
+        Jumper jumper = new Jumper();
+        ;
+        try {
             preparedStatement = DatabaseOperations.getPrepraredStatement(READ_JUMPER);
-            preparedStatement.setInt(1,id);
+            preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
             DatabaseOperations.connection.commit();
 
-            if ( !rs.next()) {
+            if (!rs.next()) {
                 System.out.println("Jumper with id = " + id + " not exists");
                 return null;
             }
 
-            do{
+            do {
                 jumper.setId(rs.getInt("id"));
                 jumper.setName(rs.getString("name"));
                 jumper.setSurname(rs.getString("surname"));
@@ -143,60 +141,29 @@ public class JumperService {
                 jumper.setPersonal_best(rs.getDouble("personal_best"));
                 jumper.setCarrer_wins(rs.getInt("carrer_wins"));
                 jumper.setTeam(rs.getInt("team_id"));
-            }while (rs.next());
+            } while (rs.next());
             return jumper;
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Cannot read jumper for some reason");
             DatabaseOperations.connection.rollback();
         }
         return null;
     }
-    public List<Jumper> read_all_jumpers() throws SQLException{
+
+    public List<Jumper> read_all_jumpers() throws SQLException {
         List<Jumper> jumpers = new ArrayList<Jumper>();
 
-        try{
+        try {
             ResultSet rs = DatabaseOperations.executeQuery(READ_ALL_JUMPERS);
             DatabaseOperations.connection.commit();
 
-            if ( !rs.next() ) {
+            if (!rs.next()) {
                 System.out.println("We have not jumpers yet");
                 return null;
             }
 
-            do{
-                jumpers.add(new Jumper(
-                rs.getInt("id"),
-                rs.getString("name"),
-                rs.getString("surname"),
-                rs.getDate("date_of_birth"),
-                rs.getDouble("personal_best"),
-                rs.getInt("carrer_wins"),
-                rs.getInt("team_id")));
-            }while (rs.next());
-            return jumpers;
-        }
-        catch (SQLException e){
-            e.printStackTrace();
-            System.out.println("Cannot read jumper for some reason");
-            DatabaseOperations.connection.rollback();
-        }
-        return null;
-    }
-    public List<Jumper> show_by_personal_best() throws SQLException{
-        List<Jumper> jumpers = new ArrayList<Jumper>();
-
-        try{
-            ResultSet rs = DatabaseOperations.executeQuery(READ_BY_PERSONAL_BEST);
-            DatabaseOperations.connection.commit();
-
-            if ( !rs.next()) {
-                System.out.println("We have not jumpers yet");
-                return null;
-            }
-
-            do{
+            do {
                 jumpers.add(new Jumper(
                         rs.getInt("id"),
                         rs.getString("name"),
@@ -205,52 +172,54 @@ public class JumperService {
                         rs.getDouble("personal_best"),
                         rs.getInt("carrer_wins"),
                         rs.getInt("team_id")));
-            }while (rs.next());
+            } while (rs.next());
             return jumpers;
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Cannot read jumper for some reason");
             DatabaseOperations.connection.rollback();
         }
         return null;
     }
-    public Jumper read_oldest_jumper() throws SQLException{
-        Jumper jumper = new Jumper();
-        try{
-            ResultSet rs = DatabaseOperations.executeQuery(OLDEST_JUMPER);
+
+    public List<Jumper> show_by_personal_best() throws SQLException {
+        List<Jumper> jumpers = new ArrayList<Jumper>();
+
+        try {
+            ResultSet rs = DatabaseOperations.executeQuery(READ_BY_PERSONAL_BEST);
             DatabaseOperations.connection.commit();
 
-            if (!rs.next() ) {
-                System.out.println("No jumpers");
+            if (!rs.next()) {
+                System.out.println("We have not jumpers yet");
                 return null;
             }
 
-            do{
-                jumper.setId(rs.getInt("id"));
-                jumper.setName(rs.getString("name"));
-                jumper.setSurname(rs.getString("surname"));
-                jumper.setDate_of_birth(rs.getDate("date_of_birth"));
-                jumper.setPersonal_best(rs.getDouble("personal_best"));
-                jumper.setCarrer_wins(rs.getInt("carrer_wins"));
-                jumper.setTeam(rs.getInt("team_id"));
-            }while (rs.next());
-            return jumper;
-        }
-        catch (SQLException e){
+            do {
+                jumpers.add(new Jumper(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("surname"),
+                        rs.getDate("date_of_birth"),
+                        rs.getDouble("personal_best"),
+                        rs.getInt("carrer_wins"),
+                        rs.getInt("team_id")));
+            } while (rs.next());
+            return jumpers;
+        } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Cannot read jumper for some reason");
             DatabaseOperations.connection.rollback();
         }
         return null;
     }
-    public Jumper most_titled_jumper() throws SQLException{
+
+    public Jumper read_oldest_jumper() throws SQLException {
         Jumper jumper = new Jumper();
-        try{
-            ResultSet rs = DatabaseOperations.executeQuery(JUMPER_WITH_MOST_WINS);
+        try {
+            ResultSet rs = DatabaseOperations.executeQuery(OLDEST_JUMPER);
             DatabaseOperations.connection.commit();
 
-            if ( !rs.next()) {
+            if (!rs.next()) {
                 System.out.println("No jumpers");
                 return null;
             }
@@ -263,58 +232,88 @@ public class JumperService {
                 jumper.setPersonal_best(rs.getDouble("personal_best"));
                 jumper.setCarrer_wins(rs.getInt("carrer_wins"));
                 jumper.setTeam(rs.getInt("team_id"));
-            }while (rs.next());
+            } while (rs.next());
             return jumper;
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Cannot read jumper for some reason");
             DatabaseOperations.connection.rollback();
         }
         return null;
     }
-    public int getJumperAge (int id) throws SQLException{
+
+    public Jumper most_titled_jumper() throws SQLException {
+        Jumper jumper = new Jumper();
+        try {
+            ResultSet rs = DatabaseOperations.executeQuery(JUMPER_WITH_MOST_WINS);
+            DatabaseOperations.connection.commit();
+
+            if (!rs.next()) {
+                System.out.println("No jumpers");
+                return null;
+            }
+
+            do {
+                jumper.setId(rs.getInt("id"));
+                jumper.setName(rs.getString("name"));
+                jumper.setSurname(rs.getString("surname"));
+                jumper.setDate_of_birth(rs.getDate("date_of_birth"));
+                jumper.setPersonal_best(rs.getDouble("personal_best"));
+                jumper.setCarrer_wins(rs.getInt("carrer_wins"));
+                jumper.setTeam(rs.getInt("team_id"));
+            } while (rs.next());
+            return jumper;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Cannot read jumper for some reason");
+            DatabaseOperations.connection.rollback();
+        }
+        return null;
+    }
+
+    public int getJumperAge(int id) throws SQLException {
         int age = 0;
-        try{
+        try {
             preparedStatement = DatabaseOperations.getPrepraredStatement(JUMPER_AGE);
-            preparedStatement.setInt(1,id);
+            preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
             DatabaseOperations.connection.commit();
 
-            if ( !rs.next()) {
+            if (!rs.next()) {
                 System.out.println("Jumper with id = " + id + " not exists");
                 return -1;
             }
 
-            do{
-              age= rs.getInt(1);;
-            }while (rs.next());
-        }
-        catch (SQLException e){
+            do {
+                age = rs.getInt(1);
+                ;
+            } while (rs.next());
+        } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Cannot read jumper for some reason");
             DatabaseOperations.connection.rollback();
         }
         return age;
     }
-    public int getTeamWins (int id) throws SQLException{
+
+    public int getTeamWins(int id) throws SQLException {
         int wins = 0;
-        try{
+        try {
             preparedStatement = DatabaseOperations.getPrepraredStatement(WINS_BY_TEAM);
-            preparedStatement.setInt(1,id);
+            preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
             DatabaseOperations.connection.commit();
 
-            if ( !rs.next() ) {
+            if (!rs.next()) {
                 System.out.println("Team with id = " + id + " not exists");
                 return -1;
             }
 
-            do{
-                wins= rs.getInt(1);;
-            }while (rs.next());
-        }
-        catch (SQLException e){
+            do {
+                wins = rs.getInt(1);
+                ;
+            } while (rs.next());
+        } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Cannot read jumper for some reason");
             DatabaseOperations.connection.rollback();
