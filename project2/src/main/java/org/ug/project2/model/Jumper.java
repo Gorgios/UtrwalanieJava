@@ -22,7 +22,12 @@ public class Jumper {
     private Team team;
     public Jumper() {
     }
-
+    public Jumper(String firstName, String lastName, Double personalBest, short carrerWins){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.personalBest = personalBest;
+        this.carrerWins = carrerWins;
+    }
     public int getId() {
         return id;
     }
@@ -69,5 +74,17 @@ public class Jumper {
 
     public void setTeam(Team team) {
         this.team = team;
+    }
+
+    @Override
+    public String toString() {
+        return "Jumper{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", personalBest=" + personalBest +
+                ", carrerWins=" + carrerWins +
+                ", team=" + team +
+                '}';
     }
 }

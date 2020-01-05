@@ -18,7 +18,13 @@ public class Coach {
     @ManyToOne(fetch = FetchType.LAZY,cascade = {CascadeType.DETACH,CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name="id_team")
     private Team team;
-    public Coach() {
+    public Coach(){
+
+    }
+    public Coach(String firstName, String lastName, String postion) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.postion = postion;
     }
 
     public int getId() {
@@ -59,5 +65,16 @@ public class Coach {
 
     public void setTeam(Team team) {
         this.team = team;
+    }
+
+    @Override
+    public String toString() {
+        return "Coach{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", postion='" + postion + '\'' +
+                ", team=" + team +
+                '}';
     }
 }
