@@ -14,9 +14,9 @@ public interface CoachRepository extends Repository <Coach,Integer> {
     List<Coach> findAllByFirstName(String firstName);
     Coach findById(Integer id);
     void deleteById(Integer id);
-    void findAllByTeam(Team team);
-    List<Coach> findAllByPostion(String postion);
     @Query(value="SELECT * FROM COACH WHERE id_team = ?1",nativeQuery = true)
     List<Coach> findAllCoachesFromTeam(Integer teamId);
+    @Query(value="SELECT * FROM COACH c JOIN TEAM t ON c.ID_TEAM=t.ID JOIN JUMPER j ON t.ID=j.ID_TEAM WHERE j.ID = ?1", nativeQuery = true)
+    List<Coach> findAllJumprChoaches(Integer id);
 
 }

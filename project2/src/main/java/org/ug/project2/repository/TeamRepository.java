@@ -13,7 +13,9 @@ public interface TeamRepository extends Repository<Team,Integer> {
     List<Team> findAll();
     Team findById(Integer id);
     Team deleteById(Integer id);
+    List<Team> findAllByName(String name);
     @Query(value="SELECT COUNT(*) FROM Team T JOIN Jumper J ON T.id=J.id_team WHERE J.personal_best > ?1 AND T.id=?2",nativeQuery = true)
     Integer countJumpersWithSelectedPersonalBestInTeam(Double personalBest, Integer teamId);
+    List<Team> findAllByCoaches_EmptyAndNameEndsWith(String end);
 
 }
